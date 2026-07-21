@@ -42,7 +42,7 @@
   /* device frame */
   .frame{background:#050406; border-radius:42px; padding:9px; border:1px solid var(--rimHi); box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.5); position:relative;}
   .frame .glass{position:absolute; inset:0; border-radius:42px; pointer-events:none; box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);}
-  .frame img{display:block; width:100%; aspect-ratio:9/15; object-fit:cover; object-position:top center; border-radius:34px;}
+  .frame img{display:block; width:100%; height:auto; border-radius:34px;}
 
   /* hero */
   .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--rim);
@@ -59,7 +59,7 @@
   .appstore .lbl small{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7; font-weight:500;}
   .appstore .lbl b{display:block; font-family:var(--disp); font-size:19px; font-weight:600; letter-spacing:-0.3px; line-height:1.05;}
   .cta-note{font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:0.04em;}
-  .hero .device{width:min(300px,78vw); margin:0 auto;}
+  .hero .device{width:min(268px,70vw); margin:0 auto;}
 
   /* signature ruler */
   .ruler{position:relative; height:58px; border-top:1px solid var(--rim); border-bottom:1px solid var(--rim); background:var(--panel); display:flex; align-items:center; overflow:hidden;}
@@ -86,7 +86,7 @@
   /* finance focus */
   .focus{background:linear-gradient(180deg,var(--surface),var(--bg));}
   .focus .grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
-  .focus .device{width:min(280px,72vw); margin:0 auto;}
+  .focus .device{width:min(248px,64vw); margin:0 auto;}
   .focus ul{list-style:none; padding:0; margin:26px 0 0;}
   .focus li{position:relative; padding:0 0 16px 26px; color:var(--sub); font-size:16px;}
   .focus li::before{content:""; position:absolute; left:0; top:9px; width:8px; height:8px; border-radius:2px; background:var(--gold);}
@@ -94,9 +94,9 @@
 
   /* gallery */
   .gallery .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
-  .gcard{}
+  .gcard{max-width:212px; margin:0 auto;}
   .gcard .frame{border-radius:34px; padding:7px;}
-  .gcard .frame img{border-radius:27px; aspect-ratio:9/12;}
+  .gcard .frame img{border-radius:27px;}
   .gcard .cap{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); text-align:center; margin-top:16px;}
   .gcard .cap b{color:var(--ink); font-weight:600;}
 
@@ -182,7 +182,7 @@
       </div>
       <div class="rv in" style="transition-delay:.1s;">
         <div class="device frame"><span class="glass"></span>
-          <img src="images/dashboard.webp" alt="EditDeck dashboard showing the active production, earnings and today's timeline" loading="eager" width="760" height="1652">
+          <img src="images/dashboard.webp" alt="EditDeck dashboard showing the active production, earnings and today's timeline" loading="eager">
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@
     <div class="wrap grid">
       <div class="rv">
         <div class="device frame"><span class="glass"></span>
-          <img src="images/active-production.webp" alt="Active production view with gross, net and tax, contract clock and timeline" loading="lazy" width="760" height="1652">
+          <img src="images/active-production.webp" alt="Active production view with gross, net and tax, contract clock and timeline" loading="lazy">
         </div>
       </div>
       <div class="rv" style="transition-delay:.08s;">
@@ -268,27 +268,27 @@
       </div>
       <div class="shots">
         <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="images/bookings.webp" alt="Bookings year overview" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/bookings.webp" alt="Bookings year overview" loading="lazy"></div>
           <p class="cap"><b>Bookings</b> · your year</p>
         </div>
         <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="images/files.webp" alt="Production files library" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/files.webp" alt="Production files library" loading="lazy"></div>
           <p class="cap"><b>Files</b> · by production</p>
         </div>
         <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="images/calculator.webp" alt="Earnings calculator" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/calculator.webp" alt="Earnings calculator" loading="lazy"></div>
           <p class="cap"><b>Calculator</b> · what-if</p>
         </div>
         <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="images/production.webp" alt="New production form" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/production.webp" alt="New production form" loading="lazy"></div>
           <p class="cap"><b>New job</b> · in seconds</p>
         </div>
         <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="images/music.webp" alt="Music library" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/music.webp" alt="Music library" loading="lazy"></div>
           <p class="cap"><b>Music</b> · tracks &amp; FX</p>
         </div>
         <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="images/menu.webp" alt="Workspace menu" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/menu.webp" alt="Workspace menu" loading="lazy"></div>
           <p class="cap"><b>Workspace</b> · one tap</p>
         </div>
       </div>
