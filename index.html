@@ -42,7 +42,7 @@
   /* device frame */
   .frame{background:#050406; border-radius:42px; padding:9px; border:1px solid var(--rimHi); box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.5); position:relative;}
   .frame .glass{position:absolute; inset:0; border-radius:42px; pointer-events:none; box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);}
-  .frame img{display:block; width:100%; border-radius:34px;}
+  .frame img{display:block; width:100%; aspect-ratio:9/15; object-fit:cover; object-position:top center; border-radius:34px;}
 
   /* hero */
   .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--rim);
@@ -96,7 +96,7 @@
   .gallery .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
   .gcard{}
   .gcard .frame{border-radius:34px; padding:7px;}
-  .gcard .frame img{border-radius:27px;}
+  .gcard .frame img{border-radius:27px; aspect-ratio:9/12;}
   .gcard .cap{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); text-align:center; margin-top:16px;}
   .gcard .cap b{color:var(--ink); font-weight:600;}
 
@@ -182,7 +182,7 @@
       </div>
       <div class="rv in" style="transition-delay:.1s;">
         <div class="device frame"><span class="glass"></span>
-          <img src="screenshots/dashboard.webp" alt="EditDeck dashboard showing the active production, earnings and today's timeline" loading="eager" width="760" height="1652">
+          <img src="images/dashboard.webp" alt="EditDeck dashboard showing the active production, earnings and today's timeline" loading="eager" width="760" height="1652">
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@
     <div class="wrap grid">
       <div class="rv">
         <div class="device frame"><span class="glass"></span>
-          <img src="screenshots/active-production.webp" alt="Active production view with gross, net and tax, contract clock and timeline" loading="lazy" width="760" height="1652">
+          <img src="images/active-production.webp" alt="Active production view with gross, net and tax, contract clock and timeline" loading="lazy" width="760" height="1652">
         </div>
       </div>
       <div class="rv" style="transition-delay:.08s;">
@@ -268,27 +268,27 @@
       </div>
       <div class="shots">
         <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="screenshots/bookings.webp" alt="Bookings year overview" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/bookings.webp" alt="Bookings year overview" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>Bookings</b> · your year</p>
         </div>
         <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="screenshots/files.webp" alt="Production files library" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/files.webp" alt="Production files library" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>Files</b> · by production</p>
         </div>
         <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="screenshots/calculator.webp" alt="Earnings calculator" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/calculator.webp" alt="Earnings calculator" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>Calculator</b> · what-if</p>
         </div>
         <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="screenshots/production.webp" alt="New production form" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/production.webp" alt="New production form" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>New job</b> · in seconds</p>
         </div>
         <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="screenshots/music.webp" alt="Music library" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/music.webp" alt="Music library" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>Music</b> · tracks &amp; FX</p>
         </div>
         <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="screenshots/menu.webp" alt="Workspace menu" loading="lazy" width="760" height="1652"></div>
+          <div class="frame"><span class="glass"></span><img src="images/menu.webp" alt="Workspace menu" loading="lazy" width="760" height="1652"></div>
           <p class="cap"><b>Workspace</b> · one tap</p>
         </div>
       </div>
@@ -311,7 +311,7 @@
           <span class="chip">No analytics</span>
           <span class="chip">You own the backup</span>
         </div>
-        <a class="lnk" href="https://mgit-26c0d3.github.io/EditDeckiOS/">Read the privacy policy →</a>
+        <a class="lnk" href="https://mgit-26c0d3.github.io/EditDeckiOS/privacy-policy.html">Read the privacy policy →</a>
       </div>
     </div>
   </section>
@@ -334,7 +334,7 @@
     <div class="wrap row">
       <div class="brand"><span class="dot"></span>EditDeck</div>
       <div class="links">
-        <a href="https://mgit-26c0d3.github.io/EditDeckiOS/">Privacy</a>
+        <a href="https://mgit-26c0d3.github.io/EditDeckiOS/privacy-policy.html">Privacy</a>
         <a href="support.html">Support</a>
         <a href="REPLACE_WITH_APP_STORE_URL">App Store</a>
       </div>
