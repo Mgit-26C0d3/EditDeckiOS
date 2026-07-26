@@ -4,353 +4,487 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EditDeck · The production office for freelance film &amp; TV editors</title>
-<meta name="description" content="A native iOS workspace for freelance editors: manage productions, schedules, earnings and Australian tax. Private by design, entirely offline.">
+<meta name="description" content="A native iOS workspace for freelance editors: productions, schedules, earnings and Australian tax. Private by design, entirely offline.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0B0A0D; --band1:#0A0809; --band2:#180F11; --band3:#241719;
-    --panel:#0E1526; --surface:#151118; --card:#1A161C; --cardHi:#221D24;
-    --rim:rgba(255,255,255,0.08); --rimHi:rgba(255,255,255,0.15);
-    --ink:#F3EEEC; --sub:#C0B6B4; --muted:#8C8380; --faint:#655C5B;
-    --coral:#F0796F; --coralSoft:#F59A92; --gold:#E8C06A; --goldSoft:#F0D089;
-    --red:#E05555; --blue:#5BA0F2; --track:#243050;
-    --disp:"Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+    --bg:#0A0809; --bg2:#120D0F; --band:#1A1114; --deep:#241719;
+    --panel:#0C0A0C; --card:#161215; --cardHi:#1E181C;
+    --rim:rgba(255,255,255,0.07); --rimHi:rgba(255,255,255,0.14);
+    --ink:#F4EFEC; --sub:#BDB2AF; --muted:#8A807E; --faint:#5E5654;
+    --coral:#F0796F; --coralSoft:#F59A92; --gold:#E8C06A; --red:#E05555;
+    --serif:"Instrument Serif", Georgia, serif;
     --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
-    --body:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    --sans:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    --rail:66px;
   }
   *{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%; scroll-behavior:smooth;}
-  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); line-height:1.6; font-size:17px; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
   a{color:inherit; text-decoration:none;}
+
+  /* ── type roles ── */
+  .disp{font-family:var(--serif); font-weight:400; letter-spacing:-0.015em; line-height:0.96;}
   .mono{font-family:var(--mono); font-variant-numeric:tabular-nums;}
-  .eyebrow{font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--coralSoft); margin:0 0 18px;}
-  .wrap{max-width:1140px; margin:0 auto; padding:0 28px;}
+  .lbl{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:0.24em; text-transform:uppercase; color:var(--muted);}
 
-  /* top bar */
-  .topbar{position:sticky; top:0; z-index:50; background:rgba(11,10,13,0.72); backdrop-filter:saturate(140%) blur(14px); border-bottom:1px solid var(--rim);}
-  .topbar .row{display:flex; align-items:center; justify-content:space-between; height:64px;}
-  .brand{font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:-0.4px; display:flex; align-items:center; gap:10px;}
-  .brand .dot{width:9px; height:9px; border-radius:2px; background:var(--coral); box-shadow:0 0 12px rgba(240,121,111,0.6);}
-  .navlinks{display:flex; gap:30px; align-items:center;}
-  .navlinks a{font-size:14.5px; color:var(--sub);} .navlinks a:hover{color:var(--ink);}
-  .btn{font-family:var(--body); font-weight:600; font-size:14.5px; padding:9px 18px; border-radius:999px; border:1px solid var(--rimHi); background:linear-gradient(180deg,#2A1D22,#1C1418); color:var(--ink); transition:transform .15s ease, border-color .15s ease;}
-  .btn:hover{transform:translateY(-1px); border-color:var(--coral);}
-  @media(max-width:720px){ .navlinks a:not(.btn){display:none;} }
+  /* ── fixed left rail: the timeline spine ── */
+  .rail{position:fixed; left:0; top:0; bottom:0; width:var(--rail); border-right:1px solid var(--rim); background:var(--panel); z-index:60; display:flex; flex-direction:column; align-items:center;}
+  .rail .mark{margin-top:20px; width:11px; height:11px; border-radius:2px; background:var(--coral); box-shadow:0 0 14px rgba(240,121,111,0.55);}
+  .rail .ticks{position:absolute; top:64px; bottom:96px; left:0; right:0;}
+  .rail .tick{position:absolute; left:0; width:11px; height:1px; background:var(--rimHi);}
+  .rail .tick.major{width:20px; background:rgba(255,255,255,0.28);}
+  .rail .tc{position:absolute; bottom:22px; left:50%; transform:translateX(-50%); writing-mode:vertical-rl; font-family:var(--mono); font-size:11px; letter-spacing:0.16em; color:var(--faint);}
+  /* playhead */
+  .ph{position:absolute; left:0; width:100%; height:0; z-index:2; will-change:transform;}
+  .ph i{position:absolute; left:0; top:0; width:100%; height:1.5px; background:var(--red); box-shadow:0 0 12px rgba(224,85,85,0.8);}
+  .ph b{position:absolute; left:0; top:-5px; width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:8px solid var(--red);}
 
-  /* device frame */
-  .frame{background:#050406; border-radius:42px; padding:9px; border:1px solid var(--rimHi); box-shadow:0 40px 90px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.5); position:relative;}
-  .frame .glass{position:absolute; inset:0; border-radius:42px; pointer-events:none; box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);}
-  .frame img{display:block; width:100%; height:auto; border-radius:34px;}
+  /* ── page shell ── */
+  .page{margin-left:var(--rail);}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(22px,4vw,64px);}
 
-  /* hero */
-  .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--rim);
-    background:
-      radial-gradient(1000px 520px at 82% -12%, rgba(240,121,111,0.16), transparent 58%),
-      linear-gradient(180deg,var(--band1) 0%, var(--band2) 60%, var(--band3) 100%);}
-  .hero .grid{display:grid; grid-template-columns:1.02fr 0.98fr; gap:56px; align-items:center; padding:84px 0 88px;}
-  h1{font-family:var(--disp); font-weight:700; font-size:clamp(40px,5.6vw,66px); line-height:1.02; letter-spacing:-1.6px; margin:0 0 22px;}
-  h1 .em{color:var(--coralSoft);}
-  .lede{font-size:19px; color:var(--sub); max-width:30em; margin:0 0 34px;}
-  .cta-row{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
-  .appstore{display:inline-flex; align-items:center; gap:12px; background:#fff; color:#0A0E14; border-radius:13px; padding:12px 20px; font-weight:600; transition:transform .15s ease, box-shadow .15s ease; box-shadow:0 10px 30px rgba(0,0,0,0.4);}
-  .appstore:hover{transform:translateY(-2px); box-shadow:0 16px 40px rgba(0,0,0,0.5);}
-  .appstore .lbl small{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7; font-weight:500;}
-  .appstore .lbl b{display:block; font-family:var(--disp); font-size:19px; font-weight:600; letter-spacing:-0.3px; line-height:1.05;}
-  .cta-note{font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:0.04em;}
-  .hero .device{width:min(268px,70vw); margin:0 auto;}
+  /* ── top nav ── */
+  .nav{position:sticky; top:0; z-index:50; background:rgba(10,8,9,0.78); backdrop-filter:saturate(140%) blur(14px); border-bottom:1px solid var(--rim);}
+  .nav .row{display:flex; align-items:center; justify-content:space-between; height:60px;}
+  .nav .brand{font-family:var(--serif); font-size:23px; letter-spacing:-0.01em;}
+  .nav .links{display:flex; gap:26px; align-items:center;}
+  .nav .links a{font-family:var(--mono); font-size:11.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted);}
+  .nav .links a:hover{color:var(--ink);}
+  .nav .go{border:1px solid var(--rimHi); border-radius:999px; padding:7px 15px; color:var(--ink)!important;}
+  .nav .go:hover{border-color:var(--coral);}
+  @media(max-width:800px){ .nav .links a:not(.go){display:none;} }
 
-  /* signature ruler */
-  .ruler{position:relative; height:58px; border-top:1px solid var(--rim); border-bottom:1px solid var(--rim); background:var(--panel); display:flex; align-items:center; overflow:hidden;}
-  .ruler .ticks{display:flex; width:100%; justify-content:space-between; padding:0 28px; max-width:1140px; margin:0 auto;}
-  .ruler .t{font-family:var(--mono); font-size:11px; color:var(--faint); position:relative; padding-top:16px;}
-  .ruler .t::before{content:""; position:absolute; top:0; left:50%; width:1px; height:9px; background:var(--rimHi);}
-  .ruler .t.hot{color:#DCE3EF;}
-  .ruler .playhead{position:absolute; top:0; bottom:0; width:2px; background:var(--red); left:-40px; box-shadow:0 0 14px rgba(224,85,85,0.6);}
-  .ruler .playhead::after{content:""; position:absolute; top:0; left:-5px; border-left:6px solid transparent; border-right:6px solid transparent; border-top:9px solid var(--red);}
+  /* ── clip slate: every section is a clip on the track ── */
+  .slate{display:flex; align-items:center; gap:14px; padding:14px 0; border-top:1px solid var(--rim);}
+  .slate .bar{width:26px; height:3px; border-radius:2px; flex-shrink:0;}
+  .slate .id{font-family:var(--mono); font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted);}
+  .slate .io{margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em; color:var(--faint);}
+  @media(max-width:640px){ .slate .io{display:none;} }
 
-  /* sections */
-  section{padding:96px 0;}
-  .sec-head{max-width:640px; margin:0 0 54px;}
-  h2{font-family:var(--disp); font-weight:700; font-size:clamp(30px,4vw,46px); letter-spacing:-1px; line-height:1.04; margin:0 0 16px;}
-  .sec-head p{font-size:18px; color:var(--sub); margin:0;}
+  /* ── masked line reveal ── */
+  .ln{display:block; overflow:hidden;}
+  .ln>span{display:block; transform:translateY(112%); transition:transform 1s cubic-bezier(0.16,1,0.3,1);}
+  .in .ln>span{transform:none;}
+  .ln:nth-child(2)>span{transition-delay:.08s;}
+  .ln:nth-child(3)>span{transition-delay:.16s;}
+  .fade{opacity:0; transform:translateY(16px); transition:opacity .8s cubic-bezier(0.16,1,0.3,1), transform .8s cubic-bezier(0.16,1,0.3,1);}
+  .in .fade, .fade.in{opacity:1; transform:none;}
+  .d1{transition-delay:.10s;} .d2{transition-delay:.18s;} .d3{transition-delay:.26s;}
 
-  .features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
-  .feat{background:var(--card); border:1px solid var(--rim); border-radius:18px; padding:26px 24px; transition:transform .2s ease, border-color .2s ease, background .2s ease;}
-  .feat:hover{transform:translateY(-4px); border-color:var(--rimHi); background:var(--cardHi);}
-  .feat h3{font-family:var(--disp); font-weight:600; font-size:19px; letter-spacing:-0.3px; margin:0 0 8px;}
-  .feat p{font-size:14.5px; color:var(--muted); margin:0; line-height:1.55;}
-  .feat .tag{font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:14px; display:block;}
+  /* ── hero ── */
+  .hero{position:relative; overflow:hidden; background:radial-gradient(900px 520px at 88% 6%, rgba(240,121,111,0.15), transparent 62%), linear-gradient(180deg,var(--bg) 0%, var(--bg2) 55%, var(--band) 100%);}
+  .hero .grid{display:grid; grid-template-columns:1.08fr 0.92fr; gap:40px; align-items:end; padding-top:64px;}
+  .hero h1{margin:16px 0 0; font-size:clamp(52px,8.2vw,116px);}
+  .hero h1 .two{color:var(--coralSoft); font-style:italic;}
+  .hero .lede{font-size:18px; color:var(--sub); max-width:31em; margin:30px 0 34px;}
+  .hero .cta{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding-bottom:96px;}
+  .hero .shot{position:relative; align-self:end;}
+  .hero .shot img{display:block; width:100%; border-radius:30px; margin-bottom:-70px; box-shadow:0 50px 100px rgba(0,0,0,0.65);}
+  .hero .note{position:absolute; left:-124px; top:96px; text-align:right; width:112px;}
+  .hero .note .l{display:block; height:1px; background:var(--rimHi); margin-top:8px;}
+  @media(max-width:960px){
+    .hero .grid{grid-template-columns:1fr; gap:8px; align-items:start;}
+    .hero .shot{max-width:290px; margin:0 auto;}
+    .hero .note{display:none;}
+    .hero .cta{padding-bottom:40px;}
+  }
 
-  /* finance focus */
-  .focus{background:linear-gradient(180deg,var(--surface),var(--bg));}
-  .focus .grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
-  .focus .device{width:min(248px,64vw); margin:0 auto;}
-  .focus ul{list-style:none; padding:0; margin:26px 0 0;}
-  .focus li{position:relative; padding:0 0 16px 26px; color:var(--sub); font-size:16px;}
-  .focus li::before{content:""; position:absolute; left:0; top:9px; width:8px; height:8px; border-radius:2px; background:var(--gold);}
-  .focus li b{color:var(--ink); font-weight:600;}
+  .store{display:inline-flex; align-items:center; gap:11px; background:var(--ink); color:#0A0809; border-radius:11px; padding:11px 19px; transition:transform .16s ease;}
+  .store:hover{transform:translateY(-2px);}
+  .store small{display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:0.14em; text-transform:uppercase; opacity:.65;}
+  .store b{display:block; font-family:var(--serif); font-size:19px; font-weight:400; line-height:1.1;}
 
-  /* gallery */
-  .gallery .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
-  .gcard{max-width:212px; margin:0 auto;}
-  .gcard .frame{border-radius:34px; padding:7px;}
-  .gcard .frame img{border-radius:27px;}
-  .gcard .cap{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); text-align:center; margin-top:16px;}
-  .gcard .cap b{color:var(--ink); font-weight:600;}
+  /* ── sections ── */
+  section{padding:0 0 clamp(80px,10vw,150px);}
+  .head{max-width:600px; margin:56px 0 0;}
+  .head h2{font-family:var(--serif); font-weight:400; font-size:clamp(34px,5.2vw,62px); line-height:1.0; letter-spacing:-0.015em; margin:14px 0 18px;}
+  .head h2 em{color:var(--coralSoft);}
+  .head p{color:var(--sub); font-size:17px; margin:0;}
 
-  /* privacy */
-  .privacy{background:var(--panel); border-top:1px solid var(--rim); border-bottom:1px solid var(--rim);}
-  .privacy .grid{display:grid; grid-template-columns:auto 1fr; gap:40px; align-items:center;}
-  .lock{width:76px; height:76px; border-radius:20px; border:1px solid var(--rimHi); display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,var(--card),var(--surface)); flex-shrink:0;}
-  .privacy h2{margin-bottom:14px;}
-  .privacy p{color:var(--sub); font-size:17px; max-width:52ch; margin:0 0 18px;}
-  .privacy .chips{display:flex; gap:10px; flex-wrap:wrap;}
-  .chip{font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--sub); border:1px solid var(--rim); border-radius:999px; padding:7px 14px;}
-  .privacy .lnk{color:var(--coralSoft); font-weight:600; font-size:15px; display:inline-block; margin-top:22px;}
+  /* ── features as gantt clips ── */
+  .track{margin-top:52px; border-top:1px solid var(--rim);}
+  .clip{display:grid; grid-template-columns:52px 1fr; gap:20px; align-items:start; padding:24px 0; border-bottom:1px solid var(--rim); position:relative;}
+  .clip .n{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; color:var(--faint); padding-top:5px;}
+  .clip .bar{height:34px; border-radius:5px; display:flex; align-items:center; padding:0 14px; font-family:var(--serif); font-size:20px; color:#140F10; position:relative; transform-origin:left center; transform:scaleX(0); transition:transform .85s cubic-bezier(0.16,1,0.3,1);}
+  .in .clip .bar{transform:scaleX(1);}
+  .clip .bar span{opacity:0; transition:opacity .4s ease .45s;}
+  .in .clip .bar span{opacity:1;}
+  .clip p{margin:11px 0 0; color:var(--muted); font-size:15px; max-width:64ch;}
+  .clip:hover .bar{filter:brightness(1.09);}
+  @media(max-width:640px){
+    .clip{grid-template-columns:1fr; gap:8px;}
+    .clip .n{padding-top:0;}
+    .clip .bar{width:100%!important; font-size:18px;}
+  }
 
-  /* final cta */
-  .final{text-align:center; background:radial-gradient(820px 420px at 50% 0%, rgba(240,121,111,0.12), transparent 60%);}
-  .final h2{margin:0 auto 14px; max-width:16ch;}
-  .final p{color:var(--sub); font-size:18px; margin:0 auto 34px; max-width:44ch;}
-  .final .appstore{margin:0 auto;}
+  /* ── money strip ── */
+  .money{display:grid; grid-template-columns:0.95fr 1.05fr; gap:clamp(32px,5vw,72px); align-items:center; margin-top:56px;}
+  .money .figs{display:flex; gap:clamp(20px,3.4vw,44px); padding:26px 0; border-top:1px solid var(--rim); border-bottom:1px solid var(--rim); margin-bottom:30px;}
+  .money .fig small{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:7px;}
+  .money .fig b{font-family:var(--mono); font-size:clamp(19px,2.5vw,27px); font-weight:500; letter-spacing:-0.01em;}
+  .money ul{list-style:none; padding:0; margin:0;}
+  .money li{position:relative; padding:0 0 17px 22px; color:var(--sub); font-size:15.5px;}
+  .money li::before{content:""; position:absolute; left:0; top:9px; width:7px; height:7px; border-radius:1.5px; background:var(--gold);}
+  .money li b{color:var(--ink); font-weight:600;}
+  .money .shot img{display:block; width:100%; max-width:270px; margin:0 auto; border-radius:28px; box-shadow:0 40px 80px rgba(0,0,0,0.6);}
+  @media(max-width:900px){ .money{grid-template-columns:1fr; gap:38px;} .money .shot{order:-1;} }
 
-  /* footer */
-  footer.foot{border-top:1px solid var(--rim); padding:44px 0;}
-  .foot .row{display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;}
-  .foot .brand{font-size:16px;}
-  .foot .meta{font-family:var(--mono); font-size:12px; color:var(--faint); letter-spacing:0.04em;}
-  .foot .links{display:flex; gap:24px;}
-  .foot .links a{font-size:14px; color:var(--sub);} .foot .links a:hover{color:var(--ink);}
+  /* ── staggered gallery ── */
+  .bin{display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2.6vw,34px); margin-top:56px; align-items:start;}
+  .bin figure{margin:0;}
+  .bin figure:nth-child(2){margin-top:56px;}
+  .bin figure:nth-child(3){margin-top:22px;}
+  .bin figure:nth-child(5){margin-top:56px;}
+  .bin figure:nth-child(6){margin-top:22px;}
+  .bin img{display:block; width:100%; border-radius:22px; border:1px solid var(--rim); box-shadow:0 26px 60px rgba(0,0,0,0.5);}
+  .bin figcaption{margin-top:13px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--faint);}
+  .bin figcaption b{color:var(--sub); font-weight:500;}
+  @media(max-width:860px){ .bin{grid-template-columns:1fr 1fr;} .bin figure:nth-child(n){margin-top:0;} .bin figure:nth-child(even){margin-top:36px;} }
+  @media(max-width:520px){ .bin{grid-template-columns:1fr; max-width:290px; margin-left:auto; margin-right:auto;} .bin figure:nth-child(even){margin-top:0;} }
 
-  /* reveal */
-  .rv{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1);}
-  .rv.in{opacity:1; transform:none;}
+  /* ── privacy ── */
+  .priv{background:var(--panel); border-top:1px solid var(--rim); border-bottom:1px solid var(--rim); padding:clamp(64px,8vw,110px) 0;}
+  .priv .in2{display:grid; grid-template-columns:auto 1fr; gap:clamp(26px,4vw,52px); align-items:start;}
+  .priv h2{font-family:var(--serif); font-weight:400; font-size:clamp(30px,4.4vw,52px); line-height:1.02; margin:12px 0 16px; letter-spacing:-0.015em;}
+  .priv p{color:var(--sub); max-width:54ch; margin:0 0 22px; font-size:16.5px;}
+  .priv .chips{display:flex; gap:9px; flex-wrap:wrap;}
+  .priv .chip{font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--sub); border:1px solid var(--rim); border-radius:999px; padding:7px 13px;}
+  .priv .lk{display:inline-block; margin-top:22px; font-family:var(--mono); font-size:11.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--coralSoft);}
+  .lockbox{width:64px; height:64px; border-radius:16px; border:1px solid var(--rimHi); display:flex; align-items:center; justify-content:center; background:var(--card);}
+  @media(max-width:700px){ .priv .in2{grid-template-columns:1fr;} }
+
+  /* ── out ── */
+  .out{text-align:center; padding:clamp(76px,9vw,132px) 0 clamp(64px,8vw,104px); background:radial-gradient(700px 340px at 50% 0%, rgba(240,121,111,0.11), transparent 62%);}
+  .out h2{font-family:var(--serif); font-weight:400; font-size:clamp(34px,5.6vw,66px); line-height:1.0; margin:14px auto 16px; max-width:15ch; letter-spacing:-0.015em;}
+  .out h2 em{color:var(--coralSoft);}
+  .out p{color:var(--sub); max-width:42ch; margin:0 auto 32px;}
+
+  footer{border-top:1px solid var(--rim); padding:34px 0 44px;}
+  footer .row{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; align-items:center;}
+  footer .brand{font-family:var(--serif); font-size:19px;}
+  footer .lks{display:flex; gap:22px;}
+  footer .lks a, footer .meta{font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--faint);}
+  footer .lks a:hover{color:var(--ink);}
 
   @media(max-width:900px){
-    .hero .grid{grid-template-columns:1fr; gap:48px; padding:60px 0 68px;}
-    .focus .grid{grid-template-columns:1fr; gap:40px;}
-    .features{grid-template-columns:1fr 1fr;}
-    .gallery .shots{grid-template-columns:1fr 1fr;}
-    .privacy .grid{grid-template-columns:1fr; gap:24px;}
+    :root{--rail:0px;}
+    .rail{display:none;}
+    .topprog{position:fixed; top:0; left:0; right:0; height:2px; background:var(--red); z-index:80; transform-origin:left center; transform:scaleX(0);}
   }
-  @media(max-width:560px){
-    body{font-size:16px;}
-    section{padding:66px 0;}
-    .wrap{padding:0 20px;}
-    .features{grid-template-columns:1fr;}
-    .gallery .shots{grid-template-columns:1fr; max-width:300px; margin:0 auto;}
-  }
+  @media(min-width:901px){ .topprog{display:none;} }
+
   @media(prefers-reduced-motion:reduce){
-    .rv{opacity:1; transform:none; transition:none;}
     html{scroll-behavior:auto;}
-    .ruler .playhead{left:52% !important;}
+    .ln>span{transform:none!important;}
+    .fade{opacity:1!important; transform:none!important;}
+    .clip .bar{transform:scaleX(1)!important;}
+    .clip .bar span{opacity:1!important;}
   }
 </style>
 </head>
 <body>
 
-  <div class="topbar">
+<!-- ══ TIMELINE SPINE ══ -->
+<aside class="rail" aria-hidden="true">
+  <span class="mark"></span>
+  <div class="ticks" id="ticks"></div>
+  <div class="ph" id="ph"><i></i><b></b></div>
+  <span class="tc mono" id="tc">00:00:00:00</span>
+</aside>
+<div class="topprog" id="topprog"></div>
+
+<div class="page">
+
+  <nav class="nav">
     <div class="wrap row">
-      <div class="brand"><span class="dot"></span>EditDeck</div>
-      <nav class="navlinks">
-        <a href="#features">Features</a>
+      <span class="brand">EditDeck</span>
+      <div class="links">
+        <a href="#workspace">Workspace</a>
+        <a href="#money">Money</a>
         <a href="#privacy">Privacy</a>
         <a href="support.html">Support</a>
-        <a class="btn" href="REPLACE_WITH_APP_STORE_URL">Download</a>
-      </nav>
-    </div>
-  </div>
-
-  <header class="hero">
-    <div class="wrap grid">
-      <div class="rv in">
-        <p class="eyebrow">For freelance film &amp; TV editors</p>
-        <h1>Run the business <span class="em">behind the edit.</span></h1>
-        <p class="lede">EditDeck is a native iPhone workspace for the work around the work: productions,
-        schedules, earnings and Australian tax, all in one place. Private by design, and entirely offline.</p>
-        <div class="cta-row">
-          <!-- Replace href with your App Store link. Swap this button for Apple's official
-               "Download on the App Store" badge asset before you ship, per Apple's guidelines. -->
-          <a class="appstore" href="REPLACE_WITH_APP_STORE_URL" aria-label="Download EditDeck on the App Store">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#0A0E14" aria-hidden="true"><path d="M17.05 12.6c-.02-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.46-1.6-2.99-1.62-1.27-.13-2.48.75-3.13.75-.64 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.39 2.05-1.44 2.5-.37 6.2 1.03 8.23.69.99 1.51 2.1 2.58 2.06 1.04-.04 1.43-.67 2.69-.67 1.25 0 1.61.67 2.7.65 1.12-.02 1.82-1.01 2.5-2.01.79-1.15 1.11-2.27 1.13-2.33-.02-.01-2.17-.83-2.19-3.29zM15 6.36c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.6-.99 1.58-.87 2.51.91.07 1.85-.46 2.42-1.14z"/></svg>
-            <span class="lbl"><small>Download on the</small><b>App&nbsp;Store</b></span>
-          </a>
-          <span class="cta-note">iPhone · iOS 26</span>
-        </div>
+        <a class="go" href="REPLACE_WITH_APP_STORE_URL">Download</a>
       </div>
-      <div class="rv in" style="transition-delay:.1s;">
-        <div class="device frame"><span class="glass"></span>
-          <img src="images/Dashboard_1.webp" alt="EditDeck dashboard showing the active production, earnings and today's timeline" loading="eager">
+    </div>
+  </nav>
+
+  <!-- ══ CLIP 01 · HERO ══ -->
+  <header class="hero sec" id="hero">
+    <div class="wrap">
+      <div class="slate">
+        <span class="bar" style="background:var(--coral);"></span>
+        <span class="id">Clip 01 · Title</span>
+        <span class="io">In 00:00:00:00</span>
+      </div>
+      <div class="grid">
+        <div>
+          <p class="lbl">For freelance film &amp; TV editors</p>
+          <h1 class="disp">
+            <span class="ln"><span>Run the business</span></span>
+            <span class="ln"><span class="two">behind the edit.</span></span>
+          </h1>
+          <p class="lede fade d1">EditDeck is a native iPhone workspace for the work around the work: productions,
+          schedules, earnings and Australian tax, all in one place. Private by design, and entirely offline.</p>
+          <div class="cta fade d2">
+            <!-- Swap for Apple's official "Download on the App Store" badge before shipping. -->
+            <a class="store" href="REPLACE_WITH_APP_STORE_URL" aria-label="Download EditDeck on the App Store">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A0809" aria-hidden="true"><path d="M17.05 12.6c-.02-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.46-1.6-2.99-1.62-1.27-.13-2.48.75-3.13.75-.64 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.39 2.05-1.44 2.5-.37 6.2 1.03 8.23.69.99 1.51 2.1 2.58 2.06 1.04-.04 1.43-.67 2.69-.67 1.25 0 1.61.67 2.7.65 1.12-.02 1.82-1.01 2.5-2.01.79-1.15 1.11-2.27 1.13-2.33-.02-.01-2.17-.83-2.19-3.29zM15 6.36c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.6-.99 1.58-.87 2.51.91.07 1.85-.46 2.42-1.14z"/></svg>
+              <span><small>Download on the</small><b>App&nbsp;Store</b></span>
+            </a>
+            <span class="lbl">iPhone · iOS 26</span>
+          </div>
+        </div>
+        <div class="shot fade d3">
+          <div class="note lbl">Dashboard<span class="l"></span></div>
+          <img src="images/Dashboard_1.webp" alt="EditDeck dashboard showing the active production, live earnings and today's timeline" loading="eager">
         </div>
       </div>
     </div>
   </header>
 
-  <div class="ruler" aria-hidden="true">
-    <div class="ticks">
-      <span class="t">MON</span><span class="t">TUE</span><span class="t">WED</span>
-      <span class="t hot">THU</span><span class="t">FRI</span><span class="t">SAT</span><span class="t">SUN</span>
-    </div>
-    <div class="playhead" id="playhead"></div>
-  </div>
-
-  <section id="features">
+  <!-- ══ CLIP 02 · WORKSPACE ══ -->
+  <section class="sec" id="workspace">
     <div class="wrap">
-      <div class="sec-head rv">
-        <p class="eyebrow">One workspace · every job</p>
-        <h2>Everything around the edit, in order.</h2>
-        <p>The reference material, the money and the schedule that a freelance edit generates, held
+      <div class="slate">
+        <span class="bar" style="background:#EBA94A;"></span>
+        <span class="id">Clip 02 · The workspace</span>
+        <span class="io">6 tracks</span>
+      </div>
+      <div class="head">
+        <p class="lbl">One workspace · every job</p>
+        <h2 class="disp"><span class="ln"><span>Everything around the edit,</span></span><span class="ln"><span><em>in order.</em></span></span></h2>
+        <p class="fade d1">The reference material, the money and the schedule that a freelance edit generates, held
         together and linked to the production each one belongs to.</p>
       </div>
-      <div class="features">
-        <div class="feat rv">
-          <span class="tag" style="color:#EBA94A;">Productions</span>
-          <h3>Every job in one hub</h3>
-          <p>Set each job's rate, dates, work days and holiday shutdowns. EditDeck works out live earnings, days remaining and contract progress from there.</p>
+
+      <div class="track">
+        <div class="clip">
+          <span class="n">V1</span>
+          <div>
+            <div class="bar" style="width:94%; background:#EBA94A;"><span>Productions</span></div>
+            <p>Set each job's rate, dates, work days and holiday shutdowns. EditDeck works out live earnings, days remaining and contract progress from there.</p>
+          </div>
         </div>
-        <div class="feat rv" style="transition-delay:.05s;">
-          <span class="tag" style="color:#48D29A;">Earnings &amp; tax</span>
-          <h3>Your numbers, to the day</h3>
-          <p>Gross, net and tax to the day, with GST, superannuation and the ATO mileage and work-from-home rates worked out for the July to June year.</p>
+        <div class="clip">
+          <span class="n">V2</span>
+          <div>
+            <div class="bar" style="width:78%; background:#2EA572; color:#F4EFEC;"><span>Earnings &amp; tax</span></div>
+            <p>Gross, net and tax to the day, with GST, superannuation and the ATO mileage and work-from-home rates worked out for the July to June year.</p>
+          </div>
         </div>
-        <div class="feat rv" style="transition-delay:.1s;">
-          <span class="tag" style="color:#5BA0F2;">Bookings</span>
-          <h3>Your year at a glance</h3>
-          <p>A whole year on one timeline: days booked, days free and overlaps at a glance, so you know when you can take the next job.</p>
+        <div class="clip">
+          <span class="n">V3</span>
+          <div>
+            <div class="bar" style="width:66%; background:#6FA8DC;"><span>Bookings</span></div>
+            <p>A whole year on one timeline: days booked, days free and overlaps at a glance, so you know when you can take the next job.</p>
+          </div>
         </div>
-        <div class="feat rv">
-          <span class="tag" style="color:#DC6896;">Notes &amp; audio</span>
-          <h3>Notes that stay with the job</h3>
-          <p>Rich-text notes, voice memos with waveforms, moodboards, and Avid Media Composer markers you can re-colour and export back to Avid. Each one linked to its job.</p>
+        <div class="clip">
+          <span class="n">V4</span>
+          <div>
+            <div class="bar" style="width:88%; background:#B83572; color:#F4EFEC;"><span>Notes &amp; audio</span></div>
+            <p>Rich-text notes, voice memos with waveforms, moodboards, and Avid Media Composer markers you can re-colour and export back to Avid. Each one linked to its job.</p>
+          </div>
         </div>
-        <div class="feat rv" style="transition-delay:.05s;">
-          <span class="tag" style="color:#818DF0;">Files</span>
-          <h3>Receipts and docs, sorted</h3>
-          <p>Documents, images, audio and receipts, filed by production. Pin what matters, and restore anything you delete.</p>
+        <div class="clip">
+          <span class="n">V5</span>
+          <div>
+            <div class="bar" style="width:57%; background:#5F4FCA; color:#F4EFEC;"><span>Files</span></div>
+            <p>Documents, images, audio and receipts, filed by production. Pin what matters, and restore anything you delete.</p>
+          </div>
         </div>
-        <div class="feat rv" style="transition-delay:.1s;">
-          <span class="tag" style="color:#C195E0;">Mileage &amp; WFH</span>
-          <h3>Deductions, tax-ready</h3>
-          <p>Log trips at the current ATO cents-per-km rate with the 5,000 km cap tracked, and home-office hours at the fixed rate. Export both to CSV at tax time.</p>
+        <div class="clip">
+          <span class="n">V6</span>
+          <div>
+            <div class="bar" style="width:72%; background:#A87DA5; color:#F4EFEC;"><span>Mileage &amp; WFH</span></div>
+            <p>Log trips at the current ATO cents-per-km rate with the 5,000 km cap tracked, and home-office hours at the fixed rate. Export both to CSV at tax time.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="focus">
-    <div class="wrap grid">
-      <div class="rv">
-        <div class="device frame"><span class="glass"></span>
+  <!-- ══ CLIP 03 · MONEY ══ -->
+  <section class="sec" id="money">
+    <div class="wrap">
+      <div class="slate">
+        <span class="bar" style="background:var(--gold);"></span>
+        <span class="id">Clip 03 · The money</span>
+        <span class="io">FY 26-27</span>
+      </div>
+      <div class="head">
+        <p class="lbl">Worked out, not guessed</p>
+        <h2 class="disp"><span class="ln"><span>Built for the Australian</span></span><span class="ln"><span><em>financial year.</em></span></span></h2>
+      </div>
+
+      <div class="money">
+        <div>
+          <div class="figs fade">
+            <div class="fig"><small>Gross</small><b class="mono ct" data-to="33000" style="color:var(--ink);">$0</b></div>
+            <div class="fig"><small>Net</small><b class="mono ct" data-to="24123" style="color:var(--gold);">$0</b></div>
+            <div class="fig"><small>Tax</small><b class="mono ct" data-to="8877" style="color:var(--red);">$0</b></div>
+          </div>
+          <ul>
+            <li class="fade d1"><b>Gross, net and tax to the day.</b> Earnings tracked as each contract runs, not reconstructed at year end.</li>
+            <li class="fade d1"><b>Rates frozen per record.</b> Every entry keeps the rate that applied the day you logged it, so updating a rate never rewrites your history.</li>
+            <li class="fade d2"><b>An earned-to-date figure that respects shutdowns.</b> The curve goes flat across a holiday break instead of overstating what you have earned.</li>
+            <li class="fade d2"><b>A what-if calculator and clean CSV exports</b> for weighing up a new offer and handing figures to your accountant.</li>
+          </ul>
+        </div>
+        <div class="shot fade d1">
           <img src="images/ProductionDetail.webp" alt="Active production view with gross, net and tax, contract clock and timeline" loading="lazy">
         </div>
       </div>
-      <div class="rv" style="transition-delay:.08s;">
-        <p class="eyebrow" style="color:var(--goldSoft);">The money, worked out</p>
-        <h2>Built for the Australian financial year.</h2>
-        <ul>
-          <li><b>Gross, net and tax to the day.</b> Earnings tracked as each contract runs, not reconstructed at year end.</li>
-          <li><b>GST, super and ATO deductions at current rates.</b> Every record freezes the rate that applied the day you logged it, so updating a rate never rewrites your history.</li>
-          <li><b>An earned-to-date figure that respects shutdowns.</b> The curve goes flat across a holiday break instead of overstating what you have earned.</li>
-          <li><b>A what-if calculator and clean CSV exports</b> for weighing up a new offer and handing figures to your accountant.</li>
-        </ul>
-      </div>
     </div>
   </section>
 
-  <section class="gallery">
+  <!-- ══ CLIP 04 · BIN ══ -->
+  <section class="sec">
     <div class="wrap">
-      <div class="sec-head rv">
-        <p class="eyebrow">On device</p>
-        <h2>A tool that looks the part.</h2>
-        <p>A calm, professional interface with light, dark and system themes and monospaced figures for money and dates, at home in an edit suite.</p>
+      <div class="slate">
+        <span class="bar" style="background:#2DBFD8;"></span>
+        <span class="id">Clip 04 · Bin</span>
+        <span class="io">6 stills</span>
       </div>
-      <div class="shots">
-        <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="images/Bookings_1.webp" alt="Bookings year overview" loading="lazy"></div>
-          <p class="cap"><b>Bookings</b> · your year</p>
-        </div>
-        <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="images/Files_1.webp" alt="Production files library" loading="lazy"></div>
-          <p class="cap"><b>Files</b> · by production</p>
-        </div>
-        <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="images/Calculator_1.webp" alt="Earnings calculator" loading="lazy"></div>
-          <p class="cap"><b>Calculator</b> · what-if</p>
-        </div>
-        <div class="gcard rv">
-          <div class="frame"><span class="glass"></span><img src="images/NewProduction_1.webp" alt="New production form" loading="lazy"></div>
-          <p class="cap"><b>New job</b> · in seconds</p>
-        </div>
-        <div class="gcard rv" style="transition-delay:.05s;">
-          <div class="frame"><span class="glass"></span><img src="images/Music_1.webp" alt="Music library" loading="lazy"></div>
-          <p class="cap"><b>Music</b> · tracks &amp; FX</p>
-        </div>
-        <div class="gcard rv" style="transition-delay:.1s;">
-          <div class="frame"><span class="glass"></span><img src="images/Menu_1.webp" alt="Workspace menu" loading="lazy"></div>
-          <p class="cap"><b>Workspace</b> · one tap</p>
-        </div>
+      <div class="head">
+        <p class="lbl">On device</p>
+        <h2 class="disp"><span class="ln"><span>A tool that <em>looks the part.</em></span></span></h2>
+        <p class="fade d1">A calm, professional interface with light, dark and system themes and monospaced figures
+        for money and dates, at home in an edit suite.</p>
+      </div>
+      <div class="bin">
+        <figure class="fade"><img src="images/Bookings_1.webp" alt="Bookings year overview" loading="lazy"><figcaption><b>Bookings</b> · your year</figcaption></figure>
+        <figure class="fade d1"><img src="images/Files_1.webp" alt="Production files library" loading="lazy"><figcaption><b>Files</b> · by production</figcaption></figure>
+        <figure class="fade d2"><img src="images/Calculator_1.webp" alt="Earnings calculator" loading="lazy"><figcaption><b>Calculator</b> · what-if</figcaption></figure>
+        <figure class="fade"><img src="images/NewProduction_1.webp" alt="New production form" loading="lazy"><figcaption><b>New job</b> · in seconds</figcaption></figure>
+        <figure class="fade d1"><img src="images/Music_1.webp" alt="Music library" loading="lazy"><figcaption><b>Music</b> · tracks &amp; FX</figcaption></figure>
+        <figure class="fade d2"><img src="images/Menu_1.webp" alt="Workspace menu" loading="lazy"><figcaption><b>Workspace</b> · one tap</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <section class="privacy" id="privacy">
-    <div class="wrap grid">
-      <div class="lock rv" aria-hidden="true">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E8C06A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.3" fill="#E8C06A" stroke="none"/></svg>
-      </div>
-      <div class="rv" style="transition-delay:.05s;">
-        <p class="eyebrow" style="color:var(--goldSoft);">Private by design</p>
-        <h2>Your data never leaves your device.</h2>
-        <p>No accounts. No cloud. No tracking. Everything lives in an on-device store, and the only copy
-        that ever leaves your phone is a single .editdeck backup file you create and control.</p>
-        <div class="chips">
-          <span class="chip">On-device only</span>
-          <span class="chip">No sign-in</span>
-          <span class="chip">No analytics</span>
-          <span class="chip">You own the backup</span>
-        </div>
-        <a class="lnk" href="https://mgit-26c0d3.github.io/EditDeckiOS/privacy-policy.html">Read the privacy policy →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="final">
+  <!-- ══ CLIP 05 · PRIVACY ══ -->
+  <section class="priv sec" id="privacy">
     <div class="wrap">
-      <div class="rv">
-        <p class="eyebrow" style="text-align:center;">Between jobs or in the thick of one</p>
-        <h2>Bring order to the freelance grind.</h2>
-        <p>EditDeck keeps the whole operation, the jobs, the money and the schedule, in your pocket.</p>
-        <a class="appstore" href="REPLACE_WITH_APP_STORE_URL" aria-label="Download EditDeck on the App Store">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#0A0E14" aria-hidden="true"><path d="M17.05 12.6c-.02-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.46-1.6-2.99-1.62-1.27-.13-2.48.75-3.13.75-.64 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.39 2.05-1.44 2.5-.37 6.2 1.03 8.23.69.99 1.51 2.1 2.58 2.06 1.04-.04 1.43-.67 2.69-.67 1.25 0 1.61.67 2.7.65 1.12-.02 1.82-1.01 2.5-2.01.79-1.15 1.11-2.27 1.13-2.33-.02-.01-2.17-.83-2.19-3.29zM15 6.36c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.6-.99 1.58-.87 2.51.91.07 1.85-.46 2.42-1.14z"/></svg>
-          <span class="lbl"><small>Download on the</small><b>App&nbsp;Store</b></span>
+      <div class="in2">
+        <div class="lockbox fade" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8C06A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.3" fill="#E8C06A" stroke="none"/></svg>
+        </div>
+        <div>
+          <p class="lbl">Clip 05 · Private by design</p>
+          <h2 class="disp"><span class="ln"><span>Your data never</span></span><span class="ln"><span>leaves your device.</span></span></h2>
+          <p class="fade d1">No accounts. No cloud. No tracking. Everything lives in an on-device store, and the only
+          copy that ever leaves your phone is a single .editdeck backup file you create and control.</p>
+          <div class="chips fade d2">
+            <span class="chip">On-device only</span>
+            <span class="chip">No sign-in</span>
+            <span class="chip">No analytics</span>
+            <span class="chip">You own the backup</span>
+          </div>
+          <a class="lk fade d2" href="https://mgit-26c0d3.github.io/EditDeckiOS/privacy-policy.html">Read the privacy policy →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OUT ══ -->
+  <section class="out sec">
+    <div class="wrap">
+      <p class="lbl">Out · 00:00:00:00</p>
+      <h2 class="disp"><span class="ln"><span>Bring order to the</span></span><span class="ln"><span><em>freelance grind.</em></span></span></h2>
+      <p class="fade d1">EditDeck keeps the whole operation, the jobs, the money and the schedule, in your pocket.</p>
+      <div class="fade d2">
+        <a class="store" href="REPLACE_WITH_APP_STORE_URL" aria-label="Download EditDeck on the App Store">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A0809" aria-hidden="true"><path d="M17.05 12.6c-.02-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.46-1.6-2.99-1.62-1.27-.13-2.48.75-3.13.75-.64 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.39 2.05-1.44 2.5-.37 6.2 1.03 8.23.69.99 1.51 2.1 2.58 2.06 1.04-.04 1.43-.67 2.69-.67 1.25 0 1.61.67 2.7.65 1.12-.02 1.82-1.01 2.5-2.01.79-1.15 1.11-2.27 1.13-2.33-.02-.01-2.17-.83-2.19-3.29zM15 6.36c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.6-.99 1.58-.87 2.51.91.07 1.85-.46 2.42-1.14z"/></svg>
+          <span><small>Download on the</small><b>App&nbsp;Store</b></span>
         </a>
       </div>
     </div>
   </section>
 
-  <footer class="foot">
+  <footer>
     <div class="wrap row">
-      <div class="brand"><span class="dot"></span>EditDeck</div>
-      <div class="links">
+      <span class="brand">EditDeck</span>
+      <div class="lks">
         <a href="https://mgit-26c0d3.github.io/EditDeckiOS/privacy-policy.html">Privacy</a>
         <a href="support.html">Support</a>
         <a href="REPLACE_WITH_APP_STORE_URL">App Store</a>
       </div>
-      <div class="meta">Made in Australia for freelance post · © 2026 Michael Lameri</div>
+      <span class="meta">Made in Australia for freelance post · © 2026 Michael Lameri</span>
     </div>
   </footer>
 
-  <script>
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, {threshold:0.14, rootMargin:'0px 0px -8% 0px'});
-    document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el));
-    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      const ph=document.getElementById('playhead');
-      if(ph){ requestAnimationFrame(()=>{ ph.style.transition='left 2.4s cubic-bezier(0.22,1,0.36,1)'; ph.style.left='52%'; }); }
-    } else { const ph=document.getElementById('playhead'); if(ph) ph.style.left='52%'; }
-  </script>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* build ruler ticks in the rail */
+  var ticks = document.getElementById('ticks');
+  if(ticks){
+    var n = 44;
+    for(var i=0;i<=n;i++){
+      var t=document.createElement('span');
+      t.className='tick'+(i%4===0?' major':'');
+      t.style.top=(i/n*100)+'%';
+      ticks.appendChild(t);
+    }
+  }
+
+  /* scroll-linked playhead + timecode (24 fps) */
+  var ph=document.getElementById('ph'), tc=document.getElementById('tc'), prog=document.getElementById('topprog');
+  var railTop=64, railBot=96, ticking=false;
+  function pad(v,l){v=String(v);while(v.length<(l||2))v='0'+v;return v;}
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    var p=max>0?Math.min(1,Math.max(0,h.scrollTop/max)):0;
+    if(ph){
+      var zone=window.innerHeight-railTop-railBot;
+      ph.style.transform='translateY('+(railTop+p*zone)+'px)';
+    }
+    if(prog) prog.style.transform='scaleX('+p+')';
+    if(tc){
+      var totalFrames=Math.round(p*(2*60*24+14*24+7)); /* up to ~00:02:14:07 */
+      var f=totalFrames%24, s=Math.floor(totalFrames/24)%60, m=Math.floor(totalFrames/(24*60))%60;
+      tc.textContent='00:'+pad(m)+':'+pad(s)+':'+pad(f);
+    }
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){ if(!ticking){ticking=true;requestAnimationFrame(onScroll);} },{passive:true});
+  window.addEventListener('resize',onScroll); onScroll();
+
+  /* section + element reveals */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.12, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.sec, .clip, .fade').forEach(function(el){ io.observe(el); });
+
+  /* count-up money figures */
+  function money(v){ return '$'+v.toLocaleString('en-AU'); }
+  var cio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el=e.target, to=parseInt(el.dataset.to,10);
+      cio.unobserve(el);
+      if(reduce){ el.textContent=money(to); return; }
+      var start=null, dur=1400;
+      function step(ts){
+        if(!start) start=ts;
+        var p=Math.min(1,(ts-start)/dur);
+        var e2=1-Math.pow(1-p,3);
+        el.textContent=money(Math.round(to*e2));
+        if(p<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.ct').forEach(function(el){ cio.observe(el); });
+})();
+</script>
 </body>
 </html>
