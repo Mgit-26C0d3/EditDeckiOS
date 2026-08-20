@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EditDeck · Privacy Policy</title>
+<meta name="description" content="EditDeck's privacy policy. No accounts, no EditDeck servers, no analytics. Your data lives on your device and, if you use iCloud, in your own private iCloud container.">
+<meta name="theme-color" content="#1E7C8C">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231E7C8C'/%3E%3Crect x='12' y='20' width='30' height='9' rx='4.5' fill='%232DBFD5'/%3E%3Crect x='12' y='35' width='20' height='9' rx='4.5' fill='%23E9C57C'/%3E%3Crect x='47' y='13' width='2.6' height='38' rx='1.3' fill='%23E23B32'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F1A28; --ink2:#19293D; --slate:#42536A; --mute:#6F7E91; --faint:#95A2B2;
+  --page:#F2F3F5; --paper:#FFFFFF; --line:#E4E8ED; --line2:#EDF0F4; --warm:#FAF7F1;
+  --teal:#2DBFD5; --teal-ink:#1E7C8C; --teal-deep:#175F6D;
+  --gold:#C88A05; --gold-b:#E3A81E; --gold-l:#E9C57C; --green:#30A67C; --coral:#EC7C78; --red:#E23B32;
+  --sh-sm:0 1px 2px rgba(15,26,40,.04), 0 4px 12px rgba(15,26,40,.05);
+  --sh-md:0 2px 4px rgba(15,26,40,.04), 0 10px 26px rgba(15,26,40,.07), 0 28px 64px rgba(15,26,40,.06);
+  --ease:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.4,.44,1);
+  --sans:"Inter Tight", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --gut:clamp(20px,4.4vw,56px); --maxw:880px; --nav-h:62px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth;}
+body{margin:0; background:var(--page); color:var(--ink); font-family:var(--sans);
+  font-size:17px; line-height:1.66; font-weight:420; letter-spacing:-.005em;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden;}
+a{color:inherit;}
+::selection{background:rgba(45,191,213,.28);}
+:focus-visible{outline:2px solid var(--teal); outline-offset:3px; border-radius:4px;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding-inline:var(--gut);}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums;}
+
+body{overflow-wrap:break-word;}
+a[href^="mailto:"], code{overflow-wrap:anywhere;}
+/* ── nav ── */
+.nav{position:fixed; inset:0 0 auto 0; z-index:90; height:var(--nav-h); display:flex; align-items:center;
+  transition:background .45s var(--ease), box-shadow .45s var(--ease);}
+.nav .row{display:flex; align-items:center; gap:20px; width:100%;}
+.mark{display:flex; align-items:center; gap:10px; font-weight:700; font-size:19px;
+  letter-spacing:-.032em; color:#fff; text-decoration:none; transition:color .4s var(--ease);}
+.nav .links{margin-left:auto; display:flex; align-items:center; gap:clamp(14px,2.4vw,26px);}
+.nav .links a{position:relative; font-size:14.5px; font-weight:500; letter-spacing:-.012em;
+  color:rgba(255,255,255,.74); text-decoration:none; transition:color .3s var(--ease);}
+.nav .links a::after{content:""; position:absolute; left:0; right:0; bottom:-5px; height:1.5px;
+  background:currentColor; transform:scaleX(0); transform-origin:right; transition:transform .5s var(--ease); border-radius:1px;}
+.nav .links a:hover{color:#fff;}
+.nav .links a:hover::after{transform:scaleX(1); transform-origin:left;}
+.nav .links a[aria-current]{color:#fff;}
+.nav.solid{background:rgba(255,255,255,.85); backdrop-filter:saturate(180%) blur(18px);
+  -webkit-backdrop-filter:saturate(180%) blur(18px); box-shadow:0 1px 0 var(--line), 0 6px 24px rgba(15,26,40,.05);}
+.nav.solid .mark{color:var(--ink);}
+.nav.solid .links a{color:var(--slate);}
+.nav.solid .links a:hover, .nav.solid .links a[aria-current]{color:var(--ink);}
+
+@media(max-width:560px){
+  .nav .links{gap:15px;}
+  .nav .links a{font-size:13.5px;}
+  .mark{font-size:17.5px;}
+  .mark svg{width:22px; height:22px;}
+}
+/* ── teal deck header ── */
+.deck{position:relative; isolation:isolate; color:#fff; overflow:hidden;
+  padding:calc(var(--nav-h) + clamp(30px,5vw,54px)) 0 clamp(46px,6.6vw,84px);
+  border-end-start-radius:clamp(26px,3vw,44px); border-end-end-radius:clamp(26px,3vw,44px);
+  background:radial-gradient(120% 90% at 84% 0%, rgba(45,191,213,.32) 0%, rgba(45,191,213,0) 60%),
+             linear-gradient(163deg,#16606E 0%,#1B7484 36%,#21879A 72%,#2592A4 100%);}
+.deck::after{content:""; position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.05;
+  mix-blend-mode:overlay; border-radius:inherit;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");}
+.deck .strata{position:absolute; inset:0; z-index:0; overflow:hidden; border-radius:inherit; pointer-events:none; display:none;}
+.deck .strata i{position:absolute; height:clamp(24px,2.6vw,34px); border-radius:999px;
+  background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.05);}
+@media(min-width:820px){ .deck .strata{display:block;} }
+.deck .wrap{position:relative; z-index:3;}
+.eyebrow{display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11px;
+  font-weight:500; letter-spacing:.19em; text-transform:uppercase; color:rgba(255,255,255,.62); margin:0;}
+.eyebrow::before{content:""; width:7px; height:7px; border-radius:2px; background:var(--teal);
+  box-shadow:0 0 12px rgba(45,191,213,.9); flex:none;}
+.deck h1{margin:16px 0 0; font-size:clamp(38px,6vw,64px); line-height:1.0; font-weight:800; letter-spacing:-.04em;}
+.deck .sub{margin:18px 0 0; font-size:clamp(16.5px,1.3vw,18.5px); color:rgba(255,255,255,.78); max-width:44ch;}
+.deck .stamp{margin:22px 0 0; font-family:var(--mono); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:rgba(255,255,255,.5);}
+
+/* ── content card ── */
+main{padding:clamp(30px,4.4vw,56px) 0 clamp(56px,8vw,104px);}
+.card{background:var(--paper); border:1px solid var(--line2); border-radius:clamp(18px,2vw,26px);
+  box-shadow:var(--sh-md); padding:clamp(24px,4vw,54px);}
+.lede{margin:0 0 clamp(26px,3.4vw,40px); font-size:clamp(17px,1.4vw,19px); line-height:1.6;
+  color:var(--ink); background:linear-gradient(180deg,#F5FAFB,#F2F8F9);
+  border:1px solid #DDEDF0; border-radius:14px; padding:18px 20px;}
+.lede b{font-weight:650;}
+
+section.s{margin-top:clamp(30px,3.6vw,44px); padding-top:clamp(24px,3vw,34px); border-top:1px solid var(--line);}
+section.s:first-of-type{margin-top:0; padding-top:0; border-top:0;}
+section.s>h2{display:grid; grid-template-columns:auto 1fr; align-items:baseline; gap:14px;
+  margin:0 0 14px; font-size:clamp(20px,1.9vw,25px); font-weight:700; letter-spacing:-.028em; line-height:1.2;}
+section.s>h2 .n{font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.16em;
+  color:var(--faint); transform:translateY(-2px);}
+p{margin:0 0 15px; color:var(--slate);}
+p:last-child{margin-bottom:0;}
+strong{color:var(--ink); font-weight:650;}
+ul{margin:0 0 15px; padding:0; list-style:none;}
+ul li{position:relative; padding:0 0 11px 24px; color:var(--slate);}
+ul li::before{content:""; position:absolute; left:3px; top:11px; width:7px; height:7px;
+  border-radius:2px; background:var(--c,var(--teal));}
+ul li:last-child{padding-bottom:0;}
+code{font-family:var(--mono); font-size:.88em; background:var(--page); border:1px solid var(--line);
+  padding:1px 6px; border-radius:5px; color:var(--ink2);}
+a.in{color:var(--teal-ink); text-decoration:none; box-shadow:inset 0 -1px 0 rgba(30,124,140,.35);
+  transition:box-shadow .3s var(--ease), color .3s;}
+a.in:hover{color:var(--ink); box-shadow:inset 0 -2px 0 var(--teal);}
+
+/* callout */
+.note{margin:0 0 15px; padding:16px 18px; border-radius:13px; background:var(--warm);
+  border:1px solid #EFE4CD; color:var(--slate);}
+.note b{color:var(--ink);}
+
+/* contents */
+.toc{margin:0 0 clamp(26px,3.4vw,38px); padding:0 0 clamp(24px,3vw,32px); border-bottom:1px solid var(--line);}
+.toc p{font-family:var(--mono); font-size:10.5px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--mute); margin:0 0 14px;}
+.toc ol{margin:0; padding:0; list-style:none; display:grid; gap:2px 26px;
+  grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(6,auto); grid-auto-flow:column;}
+.toc a{display:flex; gap:12px; padding:7px 0; text-decoration:none; color:var(--slate); font-size:15px;
+  border-bottom:1px solid transparent; transition:color .3s var(--ease);}
+.toc a span{font-family:var(--mono); font-size:11px; color:var(--faint); padding-top:3px;}
+.toc a:hover{color:var(--ink);}
+@media(max-width:620px){ .toc ol{grid-template-columns:1fr; grid-template-rows:none; grid-auto-flow:row;} }
+
+/* FAQ */
+.faq h3{margin:24px 0 6px; font-size:17.5px; font-weight:650; letter-spacing:-.02em; color:var(--ink);}
+.faq h3:first-child{margin-top:0;}
+.faq p{margin:0 0 4px;}
+
+/* buttons */
+.btn{display:inline-flex; align-items:center; gap:10px; background:var(--ink); color:#fff;
+  text-decoration:none; font-weight:600; font-size:16px; letter-spacing:-.015em;
+  padding:12px 20px; border-radius:12px; box-shadow:var(--sh-sm);
+  transition:transform .45s var(--spring), box-shadow .45s var(--ease);}
+.btn:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(15,26,40,.18);}
+
+/* footer */
+footer{border-top:1px solid var(--line); background:var(--paper);}
+footer .row{display:flex; flex-wrap:wrap; gap:16px 28px; align-items:center; padding:28px 0 38px;}
+footer .mark{color:var(--ink); font-family:var(--sans);}
+footer .lks{display:flex; gap:22px; margin-left:auto;}
+footer .lks a{font-family:var(--mono); font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--faint); text-decoration:none; transition:color .3s;}
+footer .lks a:hover{color:var(--ink);}
+footer .fine{flex-basis:100%; color:var(--faint); font-size:12.5px;}
+
+/* reveal */
+.up{opacity:0; transform:translateY(16px); transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.up.in{opacity:1; transform:none;}
+.u1{transition-delay:.08s;} .u2{transition-delay:.15s;}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{transition-duration:.001ms!important; animation-duration:.001ms!important;}
+  .up{opacity:1!important; transform:none!important;}
+}
+section.s{scroll-margin-top:calc(var(--nav-h) + 18px);}
+</style>
+</head>
+<body>
+<noscript><style>.up{opacity:1!important;transform:none!important;}</style></noscript>
+
+<nav class="nav" id="nav">
+  <div class="wrap row">
+    <a class="mark" href="index.html">
+      <svg width="25" height="25" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="currentColor" opacity=".14"/>
+        <rect x="12" y="20" width="30" height="9" rx="4.5" fill="#2DBFD5"/>
+        <rect x="12" y="35" width="20" height="9" rx="4.5" fill="#E3A81E"/>
+        <rect x="47" y="13" width="2.6" height="38" rx="1.3" fill="#E23B32"/>
+      </svg>
+      EditDeck
+    </a>
+    <div class="links">
+      <a href="index.html">Overview</a>
+      <a href="support.html">Support</a>
+      <a href="privacy-policy.html" aria-current="page">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<header class="deck" id="deck">
+  <div class="strata" aria-hidden="true">
+    <i style="left:64%; width:42%; top:22%;"></i>
+    <i style="left:64%; width:25%; top:calc(22% + 50px);"></i>
+    <i style="left:76%; width:34%; top:calc(22% + 100px);"></i>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow">EditDeck</p>
+    <h1>Privacy Policy</h1>
+    <p class="sub">What EditDeck stores, where it goes, and who can see it. The short answer is: you, and
+    nobody else.</p>
+    <p class="stamp mono">Last updated 20 August 2026</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="card">
+
+      <p class="lede up"><b>EditDeck has no accounts, no servers of its own, and no analytics.</b>
+      It collects nothing about you and transmits nothing to me. Your data lives on your device and, if
+      you use iCloud, in your own private iCloud container under your Apple Account.</p>
+
+      <nav class="toc up" aria-label="Contents">
+        <p>Contents</p>
+        <ol>
+          <li><a href="#short"><span>01</span>The short version</a></li>
+          <li><a href="#collect"><span>02</span>What I collect</a></li>
+          <li><a href="#device"><span>03</span>What is stored on your device</a></li>
+          <li><a href="#icloud"><span>04</span>iCloud sync</a></li>
+          <li><a href="#permissions"><span>05</span>Device permissions</a></li>
+          <li><a href="#backups"><span>06</span>Backups</a></li>
+          <li><a href="#thirdparty"><span>07</span>Third-party code</a></li>
+          <li><a href="#control"><span>08</span>Controlling and deleting your data</a></li>
+          <li><a href="#children"><span>09</span>Children's privacy</a></li>
+          <li><a href="#changes"><span>10</span>Changes to this policy</a></li>
+          <li><a href="#contact"><span>11</span>Contact</a></li>
+        </ol>
+      </nav>
+
+      <section class="s up" id="short">
+        <h2><span class="n">01</span><span>The short version</span></h2>
+        <p>EditDeck is a local-first app. Everything you create is written to a store on your device.
+        There is nothing to sign in to, no EditDeck server anywhere, and no tracking of any kind.</p>
+        <p>If your device is signed in to iCloud, EditDeck also mirrors your data into its own private
+        iCloud container so it appears on your other devices. That container belongs to your Apple
+        Account. It is not readable by me, and Apple's own privacy terms govern it.</p>
+      </section>
+
+      <section class="s up" id="collect">
+        <h2><span class="n">02</span><span>What I collect</span></h2>
+        <p><strong>Nothing.</strong> EditDeck gathers no personal information, no usage data, no device
+        identifiers and no crash telemetry. I run no servers and have no mechanism to receive, see or
+        store anything you enter into the app.</p>
+      </section>
+
+      <section class="s up" id="device">
+        <h2><span class="n">03</span><span>What is stored on your device</span></h2>
+        <p>Everything you create in EditDeck is written to the app's own storage on your device:</p>
+        <ul>
+          <li>Productions, schedules, bookings and calendar events</li>
+          <li style="--c:var(--gold-b)">Financial records: rates, earnings, tax, expenses, receipts, mileage and work-from-home hours</li>
+          <li style="--c:var(--green)">Contacts you add</li>
+          <li style="--c:var(--coral)">Notes, audio recordings, moodboards, imported files and Avid marker lists</li>
+        </ul>
+        <p>None of it is sent to me or to any third party. The only place it travels is your own iCloud,
+        described next.</p>
+      </section>
+
+      <section class="s up" id="icloud">
+        <h2><span class="n">04</span><span>iCloud sync</span></h2>
+        <p>EditDeck uses Apple's CloudKit and iCloud Drive to keep your data consistent across the
+        devices signed in to your Apple Account. It writes only to EditDeck's <strong>private</strong>
+        iCloud container, which means:</p>
+        <ul>
+          <li>The data belongs to your Apple Account, not to me. I cannot read it, list it or recover it.</li>
+          <li>Nothing is written to a public or shared CloudKit database, so it is never visible to other users.</li>
+          <li>Apple handles the transfer and storage under
+            <a class="in" href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's Privacy Policy</a>,
+            and the space it uses counts towards your iCloud storage.</li>
+        </ul>
+        <p>Two mechanisms are involved. Your records, note images and receipts are mirrored through
+        CloudKit. Audio recordings and files you import are carried by iCloud Drive instead, so they
+        download when you open them rather than occupying every device.</p>
+        <div class="note">
+          <p><b>Turning it off.</b> There is no sync switch inside EditDeck; it follows your device
+          settings. Turn off iCloud Drive for EditDeck under <strong>Settings > your name > iCloud</strong>,
+          or sign out of iCloud, and the app runs entirely on the local store. EditDeck also falls back to
+          a local-only store on its own whenever iCloud is unavailable.</p>
+        </div>
+      </section>
+
+      <section class="s up" id="permissions">
+        <h2><span class="n">05</span><span>Device permissions</span></h2>
+        <p>EditDeck asks for a few system permissions so certain features can work. In every case the
+        result is stored with your other data and is never sent to me or to a third party:</p>
+        <ul>
+          <li><strong>Camera</strong>, to photograph receipts.</li>
+          <li style="--c:var(--gold-b)"><strong>Microphone</strong>, to record the voice memos you attach to notes.</li>
+          <li style="--c:var(--green)"><strong>Photos</strong>, to add images you choose to your notes and library, and to save images you create. EditDeck only ever sees the items you select.</li>
+          <li style="--c:var(--coral)"><strong>Notifications</strong>, to show local reminders for your events and deadlines. These are scheduled on your device; no notification is sent from a server of mine.</li>
+        </ul>
+      </section>
+
+      <section class="s up" id="backups">
+        <h2><span class="n">06</span><span>Backups</span></h2>
+        <p>EditDeck can export a single <code>.editdeck</code> file holding your whole workspace, so you
+        can keep a copy or move to a device that doesn't share your iCloud account. Backups are created
+        only when you ask for one, and what happens to the file afterwards is entirely yours to decide:
+        where you save it, and whether you share it at all. EditDeck never uploads a backup anywhere.</p>
+      </section>
+
+      <section class="s up" id="thirdparty">
+        <h2><span class="n">07</span><span>Third-party code</span></h2>
+        <p>EditDeck includes one open-source library,
+        <a class="in" href="https://github.com/weichsel/ZIPFoundation" rel="noopener">ZIPFoundation</a>,
+        which reads and writes the backup archive on your device. It is a file-handling component only:
+        it collects no data and contacts no network.</p>
+        <p>There are no advertising, analytics, attribution or crash-reporting SDKs in the app, and no
+        code in EditDeck makes a network request other than the iCloud sync described above.</p>
+      </section>
+
+      <section class="s up" id="control">
+        <h2><span class="n">08</span><span>Controlling and deleting your data</span></h2>
+        <p>You can edit or delete any record inside the app at any time. Deleting EditDeck from a device
+        removes the copy stored on it.</p>
+        <p>If you have been syncing, a copy remains in your iCloud account until you remove it yourself
+        under <strong>Settings > your name > iCloud > Manage Account Storage</strong>. Because that data
+        sits in your Apple Account rather than with me, you are the only person who can delete it, and
+        there is nothing for you to request from me.</p>
+      </section>
+
+      <section class="s up" id="children">
+        <h2><span class="n">09</span><span>Children's privacy</span></h2>
+        <p>EditDeck collects no personal information from anyone, including children. No data is
+        gathered, transmitted or shared regardless of who uses the app.</p>
+      </section>
+
+      <section class="s up" id="changes">
+        <h2><span class="n">10</span><span>Changes to this policy</span></h2>
+        <p>If this policy changes, the updated version will be posted here with a revised date at the
+        top. Because EditDeck still collects nothing, changes are expected to be rare.</p>
+      </section>
+
+      <section class="s up" id="contact">
+        <h2><span class="n">11</span><span>Contact</span></h2>
+        <p>Questions about this policy, or about privacy in EditDeck generally, can go to
+        <a class="in" href="mailto:madebymikesupport@icloud.com">madebymikesupport@icloud.com</a>.</p>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <a class="mark" href="index.html">
+      <svg width="23" height="23" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="currentColor" opacity=".1"/>
+        <rect x="12" y="20" width="30" height="9" rx="4.5" fill="#2DBFD5"/>
+        <rect x="12" y="35" width="20" height="9" rx="4.5" fill="#E3A81E"/>
+        <rect x="47" y="13" width="2.6" height="38" rx="1.3" fill="#E23B32"/>
+      </svg>
+      EditDeck
+    </a>
+    <div class="lks">
+      <a href="index.html">Overview</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:madebymikesupport@icloud.com">Email</a>
+    </div>
+    <span class="fine">EditDeck is developed by Michael Lameri. © 2026 Michael Lameri.</span>
+  </div>
+</footer>
+<script>
+(function(){
+  "use strict";
+  var nav = document.getElementById('nav'), deck = document.getElementById('deck');
+  if(nav && deck && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      nav.classList.toggle('solid', !es[0].isIntersecting);
+    }, {rootMargin:'-54px 0px 0px 0px', threshold:0}).observe(deck);
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12, rootMargin:'0px 0px -6% 0px'});
+    document.querySelectorAll('.up').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.up').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
